@@ -5,22 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de LEDs</title>
     <style>
+        /* Centralizar todo o conteúdo na tela */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Container para os LEDs */
+        .led-container {
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        /* Estilização dos círculos LED */
         .circle {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             background-color: gray;
             display: inline-block;
-            margin: 10px;
+            margin: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1) inset;
+            border: 3px solid #ddd;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Efeito de LED aceso */
+        .circle[data-led-on="true"] {
+            background-color: red;
+            box-shadow: 0 0 20px red, 0 0 25px red inset;
         }
     </style>
 </head>
 <body>
-    <h1>Controle de LEDs</h1>
-    <div id="led1" class="circle"></div>
-    <div id="led2" class="circle"></div>
-    <div id="led3" class="circle"></div>
-    <div id="led4" class="circle"></div>
+    <div class="led-container">
+        <h1>Controle de LEDs</h1>
+        <div id="led1" class="circle"></div>
+        <div id="led2" class="circle"></div>
+        <div id="led3" class="circle"></div>
+        <div id="led4" class="circle"></div>
+    </div>
 
     <script>
         // Função para buscar o estado dos LEDs periodicamente
@@ -28,10 +60,10 @@
             fetch('/led_status')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('led1').style.backgroundColor = data.led1 ? 'red' : 'gray';
-                    document.getElementById('led2').style.backgroundColor = data.led2 ? 'red' : 'gray';
-                    document.getElementById('led3').style.backgroundColor = data.led3 ? 'red' : 'gray';
-                    document.getElementById('led4').style.backgroundColor = data.led4 ? 'red' : 'gray';
+                    document.getElementById('led1').dataset.ledOn = data.led1;
+                    document.getElementById('led2').dataset.ledOn = data.led2;
+                    document.getElementById('led3').dataset.ledOn = data.led3;
+                    document.getElementById('led4').dataset.ledOn = data.led4;
                 })
                 .catch(error => console.error('Erro ao obter o estado dos LEDs:', error));
         }
@@ -41,3 +73,4 @@
     </script>
 </body>
 </html>
+
